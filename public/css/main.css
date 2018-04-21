@@ -1,0 +1,12 @@
+.chart-wrapper {
+    position: relative;
+    width: 70%;
+    margin: auto;
+    display: inline-block;
+}
+
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 90%;
+    }
+}
