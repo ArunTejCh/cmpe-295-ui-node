@@ -4,32 +4,44 @@
     <meta charset="UTF-8">
     <title>High Charts First chart</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script> $(function () {
-        var myChart = Highcharts.chart('container', {
-            chart: {
-                type: 'bar'
-            },
-            title: {
-                text: 'Fruit Consumption'
-            },
-            xAxis: {
-                categories: ['Apples', 'Bananas', 'Oranges']
-            },
-            yAxis: {
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/indicators/indicators.js"></script>
+    <script src="https://code.highcharts.com/stock/indicators/bollinger-bands.js"></script>
+    <script>
+        $.getJSON('../data/aapl-ohlc.json', function (data) {
+
+            Highcharts.stockChart('container', {
+
+                rangeSelector: {
+                    selected: 2
+                },
+
                 title: {
-                    text: 'Fruit eaten'
-                }
-            },
-            series: [{
-                name: 'Jane',
-                data: [1, 0, 4]
-            }, {
-                name: 'John',
-                data: [5, 7, 3]
-            }]
+                    text: 'AAPL Stock Price'
+                },
+
+                legend: {
+                    enabled: true
+                },
+
+                plotOptions: {
+                    series: {
+                        showInLegend: true
+                    }
+                },
+
+                series: [{
+                    type: 'ohlc',
+                    id: 'aapl',
+                    name: 'AAPL Stock Price',
+                    data: data
+                }, {
+                    type: 'bb',
+                    linkedTo: 'aapl'
+                }]
+            });
         });
-    });
     </script>
 </head>
 <body>

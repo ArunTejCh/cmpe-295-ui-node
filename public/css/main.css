@@ -1,3 +1,7 @@
+body {
+    padding-top: 50px;
+}
+
 .chart-wrapper {
     position: relative;
     width: 70%;
@@ -5,8 +9,42 @@
     display: inline-block;
 }
 
+.index-selector{
+    display: inline-block;
+    position: relative;
+    width: 20%;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
 @media screen and (min-width: 1200px) {
     .container {
         width: 90%;
     }
+}
+
+.ml-options {
+    width: 25%;
+}
+
+.ml-results {
+    width: 70%;
+}
+
+.ml-results-elem {
+    width: 30%;
+}
+
+.ml-inline-box{
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 2px #ccc;
+    padding: 20px;
+}
+
+.ml-large-font{
+    font-size: 27px;
 }
