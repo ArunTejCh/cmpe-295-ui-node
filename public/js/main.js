@@ -83,7 +83,7 @@ new Promise(function (resolve, reject) {
     }
     Highcharts.stockChart('container', {
         rangeSelector: {
-            selected: 2,
+            selected: 1,
             verticalAlign: 'bottom'
         },
         plotOptions: {
