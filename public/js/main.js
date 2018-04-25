@@ -265,14 +265,6 @@ new Promise(function (resolve, reject) {
             }
         }, {
             type: 'line',
-            name: 'Predicted',
-            data: predictedCloseValues,
-            yAxis: 1,
-            dataGrouping: {
-                units: groupingUnits
-            }
-        }, {
-            type: 'line',
             name: 'Actions',
             data: predictedActions,
             yAxis: 0,
