@@ -36,6 +36,16 @@ new Promise(function (resolve, reject) {
 
     return prom;
 }).then(function (values) {
+    let prom = new Promise(function (resolve, reject) {
+        $.getJSON(baseUrl + '/indexes/' + values[0][0] + '/prediction', function (predictions) {
+            console.log(`got predictions data as ${predictions}`);
+            values.push(predictions);
+            resolve(values);
+        });
+    })
+
+    return prom;
+}).then(function (values) {
     let promises = [];
     promises.push(Promise.resolve(values));
     for (let s of values[2]) {
@@ -51,6 +61,8 @@ new Promise(function (resolve, reject) {
     console.log(`got values as ${values}`);
     let data = values[0][1];
     let targetData = values[0][3];
+    let predictions = [], predictionsData = values[0][4], predictionsDataArray = [];
+    let predictedCloseValues = [], predictedActions = [], pSize = predictionsData.length;
     let dataArray = [];
     let targets = [];
     let groupingUnits = [['week', // unit name
@@ -58,6 +70,12 @@ new Promise(function (resolve, reject) {
     ], ['month', [1, 2, 3, 4, 6]]];
     for (let i = 0; i < data.length; i++) {
         dataArray.push([data[i].date, data[i].open, data[i].high, data[i].low, data[i].close]);
+        let j = i - data.length + pSize;
+        if(j >= 0){
+            predictionsDataArray.push([data[i].date, data[i].open, data[i].high, data[i].low, data[i].close]);
+            predictedCloseValues.push([predictionsData[j].date, predictionsData[j].close]);
+            predictedActions.push([predictionsData[j].date, predictionsData[j].predictions]);
+        }
     }
 
     for (let i = 0; i < targetData.length; i++) {
@@ -205,5 +223,62 @@ new Promise(function (resolve, reject) {
 	        		]
 	        	}]
 	        ] */
+    });
+
+    Highcharts.StockChart({
+        chart: {
+            renderTo: 'prediction-container',
+            alignTicks: false
+        },
+
+        rangeSelector: {
+            selected: 1
+        },
+
+        title: {
+            text: 'AAPL Historical'
+        },
+
+        yAxis: [{
+            title: {
+                text: 'OHLC'
+            },
+            lineWidth: 2
+        }, {
+            title: {
+                text: 'Predictions'
+            },
+            opposite: true,
+        }],
+
+        navigator: {
+            enabled: false
+        },
+
+        series: [{
+            type: 'candlestick',
+            name: 'AAPL',
+            data: predictionsDataArray,
+            yAxis: 1,
+            dataGrouping: {
+                units: groupingUnits
+            }
+        }, {
+            type: 'line',
+            name: 'Predicted',
+            data: predictedCloseValues,
+            yAxis: 1,
+            dataGrouping: {
+                units: groupingUnits
+            }
+        }, {
+            type: 'line',
+            name: 'Actions',
+            data: predictedActions,
+            yAxis: 0,
+            dataGrouping: {
+                units: groupingUnits
+            }
+        }]
     });
 });
