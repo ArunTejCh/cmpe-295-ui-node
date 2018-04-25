@@ -79,7 +79,7 @@ new Promise(function (resolve, reject) {
     }
 
     for (let i = 0; i < targetData.length; i++) {
-        targets.push([targetData[i].date, (targetData[i].target + 1)]);
+        targets.push([targetData[i].date, (targetData[i].target)]);
     }
     Highcharts.stockChart('container', {
         rangeSelector: {
@@ -87,7 +87,7 @@ new Promise(function (resolve, reject) {
             verticalAlign: 'bottom'
         },
         plotOptions: {
-            column: {
+            /*column: {
                 zones: [{
                     value: 2, // Values up to 10 (not including) ...
                     color: 'red' // ... have the color blue.
@@ -97,7 +97,7 @@ new Promise(function (resolve, reject) {
                 }, {
                     color: 'green' // Values from 10 (including) and up have the color red
                 }]
-            },
+            },*/
             series: {
                 showInLegend: true
             }
@@ -114,30 +114,15 @@ new Promise(function (resolve, reject) {
             align: 'right',
             enabled: true
         }, yAxis: [{
-            labels: {
-                align: 'right',
-                x: -3
-            },
             title: {
-                text: 'Index Price'
+                text: 'Stock Data'
             },
-            height: '90%',
-            lineWidth: 2,
-            resize: {
-                enabled: true
-            }
-        }, {
-            labels: {
-                align: 'right',
-                x: -3
-            },
-            title: {
-                text: 'Targets'
-            },
-            top: '95%',
-            height: '5%',
-            offset: 0,
             lineWidth: 2
+        }, {
+            title: {
+                text: 'Predictions'
+            },
+            opposite: true,
         }],
         series: [{
             type: 'candlestick',
@@ -149,9 +134,17 @@ new Promise(function (resolve, reject) {
                 units: groupingUnits
             }
         }, {
-            type: 'column',
+            type: 'line',
             name: 'Targets',
             data: targets,
+            yAxis: 1,
+            dataGrouping: {
+                units: groupingUnits
+            }
+        }, {
+            type: 'line',
+            name: 'Actions',
+            data: predictedActions,
             yAxis: 1,
             dataGrouping: {
                 units: groupingUnits
