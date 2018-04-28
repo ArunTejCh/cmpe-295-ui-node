@@ -62,7 +62,7 @@ new Promise(function (resolve, reject) {
     let data = values[0][1];
     let targetData = values[0][3];
     let predictions = [], predictionsData = values[0][4], predictionsDataArray = [];
-    let actualTargets = [], predictedActions = [], pSize = predictionsData.length;
+    let actualTargets = [], predictedActions = [], pSize = predictionsData.length, profitData = [];
     let dataArray = [];
     let targets = [];
     let groupingUnits = [['week', // unit name
@@ -74,6 +74,7 @@ new Promise(function (resolve, reject) {
         if(j >= 0){
             predictionsDataArray.push([predictionsData[j].date, predictionsData[j].open, predictionsData[j].high, predictionsData[j].low, predictionsData[j].close]);
             predictedActions.push([predictionsData[j].date, predictionsData[j].predictions]);
+            profitData.push([predictionsData[j].date, predictionsData[j].net_profit])
         }
     }
 
@@ -136,22 +137,6 @@ new Promise(function (resolve, reject) {
             name: 'BankNifty',
             yAxis: 0,
             data: dataArray,
-            dataGrouping: {
-                units: groupingUnits
-            }
-        }, {
-            type: 'line',
-            name: 'Targets',
-            data: targets,
-            yAxis: 1,
-            dataGrouping: {
-                units: groupingUnits
-            }
-        }, {
-            type: 'line',
-            name: 'Actions',
-            data: predictedActions,
-            yAxis: 1,
             dataGrouping: {
                 units: groupingUnits
             }
@@ -279,5 +264,36 @@ new Promise(function (resolve, reject) {
                 units: groupingUnits
             }
         }]
+    });
+
+    Highcharts.stockChart('profit-container', {
+        rangeSelector: {
+            selected: 1
+        },
+        title: {
+            text: 'Profit change over time'
+        },
+        series: [{
+            name: 'Net Profits',
+            data: profitData,
+            tooltip: {
+                valueDecimals: 2
+            }
+        }]
+    });
+});
+
+
+$(document).ready(function(){
+    $('#graph-shown').change(function(){
+        let val = $('#graph-shown').val();
+        $('.chart-wrapper').hide();
+        if(val === 'ls'){
+            $('#prediction-container-wrapper').css('display', 'inline-block');
+        }else if(val === 'his'){
+            $('#container-wrapper').css('display', 'inline-block');
+        }else if(val == 'profit'){
+            $('#profit-container-wrapper').css('display', 'inline-block');
+        }
     });
 });

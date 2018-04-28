@@ -78,10 +78,11 @@
        -->
         <div id="main-dashboard">
             <div class="index-selector text-center">
-                <p>Select stock/index</p>
-                <select name="indexName"> <!--Supplement an id here instead of using 'text'-->
-                    <option value="BankNifty" selected>Bank Nifty</option>
-                    <option value="DowJones">Dow Jones</option>
+                <p>Select Graph</p>
+                <select id="graph-shown" name="indexName"> <!--Supplement an id here instead of using 'text'-->
+                    <option value="ls" selected>Long/short positions</option>
+                    <option value="his">Historic Data</option>
+                    <option value="profit">Profit over Time</option>
                 </select>
                 <p class="invisible">Place holder</p>
                 <p class="invisible">Place holder</p>
@@ -91,11 +92,14 @@
                 <p class="invisible">Place holder</p>
 
             </div>
-            <div class="chart-wrapper" style="display: none;">
+            <div id="container-wrapper" class="chart-wrapper" style="display: none;">
                 <div id="container" style="height: 400px; min-width: 310px"></div>
             </div>
-            <div class="chart-wrapper" style="display: inline-block;">
+            <div id="prediction-container-wrapper" class="chart-wrapper" style="display: inline-block;">
                 <div id="prediction-container" style="height: 400px; min-width: 310px"></div>
+            </div>
+            <div id="profit-container-wrapper" class="chart-wrapper" style="display: none;">
+                <div id="profit-container" style="height: 400px; min-width: 310px"></div>
             </div>
         </div>
         <div id="constituent-dashboard" class="chart-wrapper" style="display: none;">
@@ -115,7 +119,7 @@
             <div class="ml-results ml-inline-box">
                 <div class="ml-results-elem ml-inline-box">
                     <p class="text-center">Current Recommendation</p>
-                    <p id="current-position" class="text-center ml-large-font">BUY</p>
+                    <p id="current-position" class="text-center ml-large-font">LONG</p>
                 </div>
                 <div class="ml-results-elem ml-inline-box">
                     <p class="text-center">Historic profit/loss with ML model</p>
