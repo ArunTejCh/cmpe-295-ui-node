@@ -91,10 +91,10 @@
                 <p class="invisible">Place holder</p>
 
             </div>
-            <div class="chart-wrapper" style="display: inline-block;">
+            <div class="chart-wrapper" style="display: none;">
                 <div id="container" style="height: 400px; min-width: 310px"></div>
             </div>
-            <div class="chart-wrapper" style="display: none;">
+            <div class="chart-wrapper" style="display: inline-block;">
                 <div id="prediction-container" style="height: 400px; min-width: 310px"></div>
             </div>
         </div>
@@ -115,15 +115,15 @@
             <div class="ml-results ml-inline-box">
                 <div class="ml-results-elem ml-inline-box">
                     <p class="text-center">Current Recommendation</p>
-                    <p class="text-center ml-large-font">BUY</p>
+                    <p id="current-position" class="text-center ml-large-font">BUY</p>
                 </div>
                 <div class="ml-results-elem ml-inline-box">
                     <p class="text-center">Historic profit/loss with ML model</p>
-                    <p class="text-center ml-large-font">8888.88</p>
+                    <p id="net-profit" class="text-center ml-large-font">8888.88</p>
                 </div>
                 <div class="ml-results-elem ml-inline-box">
                     <p class="text-center">Historic profit/loss with Buy & Hold</p>
-                    <p class="text-center ml-large-font">8888.88</p>
+                    <p id="buy-hold" class="text-center ml-large-font">8888.88</p>
                 </div>
             </div>
         </div>

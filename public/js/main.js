@@ -62,7 +62,7 @@ new Promise(function (resolve, reject) {
     let data = values[0][1];
     let targetData = values[0][3];
     let predictions = [], predictionsData = values[0][4], predictionsDataArray = [];
-    let predictedCloseValues = [], predictedActions = [], pSize = predictionsData.length;
+    let actualTargets = [], predictedActions = [], pSize = predictionsData.length;
     let dataArray = [];
     let targets = [];
     let groupingUnits = [['week', // unit name
@@ -72,14 +72,20 @@ new Promise(function (resolve, reject) {
         dataArray.push([data[i].date, data[i].open, data[i].high, data[i].low, data[i].close]);
         let j = i - data.length + pSize;
         if(j >= 0){
-            predictionsDataArray.push([data[i].date, data[i].open, data[i].high, data[i].low, data[i].close]);
-            predictedCloseValues.push([predictionsData[j].date, predictionsData[j].close]);
+            predictionsDataArray.push([predictionsData[j].date, predictionsData[j].open, predictionsData[j].high, predictionsData[j].low, predictionsData[j].close]);
             predictedActions.push([predictionsData[j].date, predictionsData[j].predictions]);
         }
     }
 
+    $('#current-position').html((predictionsData[predictionsData.length - 1].current_position).toUpperCase());
+    $('#net-profit').html((predictionsData[predictionsData.length - 1].net_profit).toFixed(2));
+    $('#buy-hold').html((predictionsData[predictionsData.length - 1].close - predictionsData[0].close).toFixed(2));
+
     for (let i = 0; i < targetData.length; i++) {
         targets.push([targetData[i].date, (targetData[i].target)]);
+        if(targetData.length - i < 60){
+            actualTargets.push([targetData[i].date, targetData[i].target]);
+        }
     }
     Highcharts.stockChart('container', {
         rangeSelector: {
@@ -260,6 +266,14 @@ new Promise(function (resolve, reject) {
             type: 'line',
             name: 'Actions',
             data: predictedActions,
+            yAxis: 0,
+            dataGrouping: {
+                units: groupingUnits
+            }
+        }, {
+            type: 'line',
+            name: 'Targets',
+            data: actualTargets,
             yAxis: 0,
             dataGrouping: {
                 units: groupingUnits
