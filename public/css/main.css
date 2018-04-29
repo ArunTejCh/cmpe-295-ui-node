@@ -4,7 +4,7 @@ body {
 
 .chart-wrapper {
     position: relative;
-    width: 70%;
+    width: 100%;
     margin: auto;
     display: inline-block;
 }
@@ -25,20 +25,18 @@ body {
     }
 }
 
-.ml-options {
-    width: 25%;
-}
-
 .ml-results {
-    width: 70%;
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
 }
 
 .ml-results-elem {
-    width: 30%;
+    width: 22%;
+    height: 120px;
 }
 
 .ml-inline-box{
-    display: inline-block;
     margin: 10px;
     border: 1px solid #eee;
     box-shadow: 0 2px 2px #ccc;

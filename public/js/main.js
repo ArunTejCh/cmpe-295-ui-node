@@ -220,7 +220,7 @@ new Promise(function (resolve, reject) {
         },
 
         title: {
-            text: 'AAPL Historical'
+            text: ''
         },
 
         yAxis: [{
@@ -241,7 +241,7 @@ new Promise(function (resolve, reject) {
 
         series: [{
             type: 'candlestick',
-            name: 'AAPL',
+            name: 'Bank Nifty',
             data: predictionsDataArray,
             yAxis: 1,
             dataGrouping: {
@@ -285,8 +285,10 @@ new Promise(function (resolve, reject) {
 
 
 $(document).ready(function(){
-    $('#graph-shown').change(function(){
-        let val = $('#graph-shown').val();
+    $('#graph-selector button').click(function() {
+        $(this).addClass('active').siblings().removeClass('active');
+        // TODO: insert whatever you want to do with $(this) here
+        let val = $(this).val();
         $('.chart-wrapper').hide();
         if(val === 'ls'){
             $('#prediction-container-wrapper').css('display', 'inline-block');
