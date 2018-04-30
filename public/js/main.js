@@ -293,6 +293,15 @@ new Promise(function (resolve, reject) {
             dataGrouping: {
                 units: groupingUnits
             }
+        },{
+            type: 'flags',
+            name: 'Flags on series',
+            data: [{
+                x: 1513209600000,
+                title: 'On series'
+            }],
+            onSeries: 'profits',
+            shape: 'squarepin'
         }, {
             type: 'line',
             name: 'ema10plus5',
