@@ -65,6 +65,7 @@ new Promise(function (resolve, reject) {
     let actualTargets = [], predictedActions = [], pSize = predictionsData.length, profitData = [];
     let dataArray = [];
     let targets = [];
+    let predictionsPlus = [], predictionsMinus=[];
     let groupingUnits = [['week', // unit name
         [1] // allowed multiples
     ], ['month', [1, 2, 3, 4, 6]]];
@@ -74,6 +75,8 @@ new Promise(function (resolve, reject) {
         if(j >= 0){
             predictionsDataArray.push([predictionsData[j].date, predictionsData[j].open, predictionsData[j].high, predictionsData[j].low, predictionsData[j].close]);
             predictedActions.push([predictionsData[j].date, predictionsData[j].predictions]);
+            predictionsPlus.push([predictionsData[j].date, predictionsData[j].ema10plus5]);
+            predictionsMinus.push([predictionsData[j].date, predictionsData[j].ema10minus5]);
             profitData.push([predictionsData[j].date, predictionsData[j].net_profit])
         }
     }
@@ -141,6 +144,14 @@ new Promise(function (resolve, reject) {
                 units: groupingUnits
             }
         }, {
+            type: 'line',
+            name: 'Targets',
+            data: targets,
+            yAxis: 1,
+            dataGrouping: {
+                units: groupingUnits
+            }
+        },{
             type: 'bb',
             name: 'Bollinger Bands',
             linkedTo: 'bnknifty'
@@ -182,7 +193,7 @@ new Promise(function (resolve, reject) {
         })
     }
 
-    Highcharts.stockChart('stocks', {
+    Highcharts.stockChart('stocks-container', {
         rangeSelector: {
             selected: 2
         },
@@ -203,7 +214,7 @@ new Promise(function (resolve, reject) {
 	        	series:[{
 	        		id: 'Constituent stocks',
 	        		data:[
-	        			values[1][0]: 
+	        			values[1][0]:
 	        		]
 	        	}]
 	        ] */
@@ -220,14 +231,19 @@ new Promise(function (resolve, reject) {
         },
 
         title: {
-            text: ''
+            text: 'Long/Short points'
         },
 
         yAxis: [{
             title: {
-                text: 'OHLC'
+                text: 'BankNifty'
             },
             lineWidth: 2
+        }, {
+            title: {
+                text: 'Net Profit'
+            },
+            opposite: true,
         }, {
             title: {
                 text: 'Predictions'
@@ -241,25 +257,56 @@ new Promise(function (resolve, reject) {
 
         series: [{
             type: 'candlestick',
-            name: 'Bank Nifty',
+            name: 'profits',
+            id: 'profits',
             data: predictionsDataArray,
-            yAxis: 1,
+            yAxis: 0,
             dataGrouping: {
                 units: groupingUnits
+            }
+        }, {
+            type: 'line',
+            name: 'ema10plus5',
+            data: predictionsPlus,
+            yAxis: 0,
+            color: '#7CB5EC',
+            dataGrouping: {
+                units: groupingUnits
+            }
+        }, {
+            type: 'line',
+            name: 'ema10minus5',
+            data: predictionsMinus,
+            yAxis: 0,
+            color: '#7CB5EC',
+            dataGrouping: {
+                units: groupingUnits
+            }
+        }, {
+            type: 'ema',
+            name: 'EMA 10',
+            linkedTo: 'profits',
+            lineWidth: 0.5,
+            color: '#7CB5EC',
+            marker: {
+                enabled: false
+            },
+            params: {
+                period: 10
             }
         }, {
             type: 'line',
             name: 'Actions',
             data: predictedActions,
-            yAxis: 0,
+            yAxis: 2,
             dataGrouping: {
                 units: groupingUnits
             }
         }, {
             type: 'line',
-            name: 'Targets',
-            data: actualTargets,
-            yAxis: 0,
+            name: 'Profit Data',
+            data: profitData,
+            yAxis: 1,
             dataGrouping: {
                 units: groupingUnits
             }
@@ -281,13 +328,14 @@ new Promise(function (resolve, reject) {
             }
         }]
     });
+    $('.chart-wrapper').hide();
+    $('#prediction-container-wrapper').css('display', 'inline-block');
 });
 
 
 $(document).ready(function(){
     $('#graph-selector button').click(function() {
         $(this).addClass('active').siblings().removeClass('active');
-        // TODO: insert whatever you want to do with $(this) here
         let val = $(this).val();
         $('.chart-wrapper').hide();
         if(val === 'ls'){
@@ -296,6 +344,8 @@ $(document).ready(function(){
             $('#container-wrapper').css('display', 'inline-block');
         }else if(val == 'profit'){
             $('#profit-container-wrapper').css('display', 'inline-block');
+        }else if(val === 'stocks'){
+            $('#stocks-container-wrapper').css('display', 'inline-block');
         }
     });
 });
