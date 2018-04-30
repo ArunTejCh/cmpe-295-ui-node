@@ -337,6 +337,7 @@ new Promise(function (resolve, reject) {
             name: 'Actions',
             data: predictedActions,
             yAxis: 2,
+            lineWidth: 1,
             dataGrouping: {
                 units: groupingUnits
             }
@@ -346,6 +347,7 @@ new Promise(function (resolve, reject) {
             data: profitData,
             yAxis: 1,
             lineWidth: 4,
+            color: 'green',
             dataGrouping: {
                 units: groupingUnits
             }
