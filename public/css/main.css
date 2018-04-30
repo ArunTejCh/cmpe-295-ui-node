@@ -46,3 +46,11 @@ body {
 .ml-large-font{
     font-size: 27px;
 }
+
+.green-font{
+    color: green;
+}
+
+.red-font{
+    color: red;
+}

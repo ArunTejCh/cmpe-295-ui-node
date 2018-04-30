@@ -83,8 +83,17 @@ new Promise(function (resolve, reject) {
 
     $('#current-position').html((predictionsData[predictionsData.length - 1].current_position).toUpperCase());
     $('#net-profit').html((predictionsData[predictionsData.length - 1].net_profit).toFixed(2));
+    if(predictionsData[predictionsData.length - 1].net_profit >= 0){
+        $('#net-profit').addClass('green-font');
+    }else{
+        $('#net-profit').addClass('red-font');
+    }
     $('#buy-hold').html((predictionsData[predictionsData.length - 1].close - predictionsData[0].close).toFixed(2));
-
+    if((predictionsData[predictionsData.length - 1].close - predictionsData[0].close) >= 0){
+        $('#buy-hold').addClass('green-font');
+    }else{
+        $('#buy-hold').addClass('red-font');
+    }
     for (let i = 0; i < targetData.length; i++) {
         targets.push([targetData[i].date, (targetData[i].target)]);
         if(targetData.length - i < 60){
@@ -225,7 +234,27 @@ new Promise(function (resolve, reject) {
             renderTo: 'prediction-container',
             alignTicks: false
         },
-
+        plotOptions: {
+        /*column: {
+            zones: [{
+                value: 2, // Values up to 10 (not including) ...
+                color: 'red' // ... have the color blue.
+            }, {
+                value: 3,
+                color: 'black' // Values from 10 (including) and up have the color red
+            }, {
+                color: 'green' // Values from 10 (including) and up have the color red
+            }]
+        },*/
+        series: {
+            showInLegend: true
+        }
+        },legend: {
+            layout: 'vertical',
+            verticalAlign: 'middle',
+            align: 'right',
+            enabled: true
+        },
         rangeSelector: {
             selected: 1
         },
@@ -307,6 +336,7 @@ new Promise(function (resolve, reject) {
             name: 'Profit Data',
             data: profitData,
             yAxis: 1,
+            lineWidth: 4,
             dataGrouping: {
                 units: groupingUnits
             }
