@@ -66,6 +66,8 @@ new Promise(function (resolve, reject) {
     let dataArray = [];
     let targets = [];
     let predictionsPlus = [], predictionsMinus=[];
+    let flagsArray = [];
+    let curAction = "";
     let groupingUnits = [['week', // unit name
         [1] // allowed multiples
     ], ['month', [1, 2, 3, 4, 6]]];
@@ -78,6 +80,13 @@ new Promise(function (resolve, reject) {
             predictionsPlus.push([predictionsData[j].date, predictionsData[j].ema10plus5]);
             predictionsMinus.push([predictionsData[j].date, predictionsData[j].ema10minus5]);
             profitData.push([predictionsData[j].date, predictionsData[j].net_profit])
+            if(curAction !== predictionsData[j].current_position){
+                flagsArray.push({
+                    x: predictionsData[j].date,
+                    title: predictionsData[j].current_position
+                })
+                curAction = predictionsData[j].current_position;
+            }
         }
     }
 
@@ -296,10 +305,7 @@ new Promise(function (resolve, reject) {
         },{
             type: 'flags',
             name: 'Flags on series',
-            data: [{
-                x: 1513209600000,
-                title: 'On series'
-            }],
+            data: flagsArray,
             onSeries: 'profits',
             shape: 'squarepin'
         }, {
